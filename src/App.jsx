@@ -10,6 +10,7 @@ function App() {
   const [characters, setCharacter] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useState("");
+  const [selectedId, setSelectedId] = useState(null);
   useEffect(() => {
     setIsLoading(true);
     axios
@@ -17,12 +18,16 @@ function App() {
       .then((res) => {
         setCharacter(res.data.results.slice(0, 5));
       })
-      .catch((err) => {toast.error(err.response.data.error)
-        setCharacter([])
+      .catch((err) => {
+        toast.error(err.response.data.error);
+        setCharacter([]);
       })
       .finally(() => setIsLoading(false));
   }, [query]);
-
+  const handleSelectCharacter = (id) => {
+    setSelectedId(prev=> prev===id ? null : id);
+  };
+  console.log(selectedId);
   return (
     <div className="app">
       <Toaster />
@@ -32,8 +37,13 @@ function App() {
       </Navbar>
 
       <div className="main">
-        <CharacterList characters={characters} isLoading={isLoading} />
-        <CharacterDetail />
+        <CharacterList
+        selectedId={selectedId}
+          characters={characters}
+          isLoading={isLoading}
+          onSelectedCharacter={handleSelectCharacter}
+        />
+        <CharacterDetail selectedId={selectedId} />
       </div>
     </div>
   );
