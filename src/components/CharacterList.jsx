@@ -17,12 +17,18 @@ const CharacterList = ({
   return (
     <div className="characters-list">
       {characters.map((item) => (
-        <Character
-          selectedId={selectedId}
-          key={item.id}
-          item={item}
-          onSelectedCharacter={onSelectedCharacter}
-        />
+        <Character key={item.id} item={item}>
+          <button
+            className="icon red"
+            onClick={() => onSelectedCharacter(item.id)}
+          >
+            {selectedId === item.id ? (
+              <EyeSlashIcon />
+            ) : (
+              <EyeIcon style={{ color: "var(--green-600)" }} />
+            )}
+          </button>
+        </Character>
       ))}
     </div>
   );
@@ -30,15 +36,13 @@ const CharacterList = ({
 
 export default CharacterList;
 
-function Character({ item, onSelectedCharacter, selectedId }) {
+export function Character({ item, children }) {
   return (
     <div className="list__item">
       <img src={item.image} alt={item.name} />
       <CharacterName item={item} />
       <CharacterInfo item={item} />
-      <button className="icon red" onClick={() => onSelectedCharacter(item.id)}>
-        {selectedId === item.id ? <EyeSlashIcon /> : <EyeIcon style={{color:"var(--green-600)"}} />}
-      </button>
+      {children}
     </div>
   );
 }
