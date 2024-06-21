@@ -15,6 +15,7 @@ function App() {
   const [favorite, setFavorite] = useState(
     () => JSON.parse(localStorage.getItem("FAVORITES")) || []
   );
+
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
@@ -41,16 +42,21 @@ function App() {
   useEffect(() => {
     localStorage.setItem("FAVORITES", JSON.stringify(favorite));
   }, [favorite]);
+
   const handleSelectCharacter = (id) => {
     setSelectedId((prev) => (prev === id ? null : id));
   };
+
   const isAddFavorite = favorite.map((fav) => fav.id).includes(selectedId);
+
   const handleFavorite = (char) => {
     setFavorite([...favorite, char]);
   };
+
   const handleDeletFavorite = (id) => {
     setFavorite((prevFav) => prevFav.filter((fav) => fav.id !== id));
   };
+  
   return (
     <div className="app">
       <Toaster />
